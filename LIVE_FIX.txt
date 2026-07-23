@@ -1,0 +1,26 @@
+🌱 PLANTABLE ECO - LIVE SERVER FIX 🌱
+
+PROBLEM: 
+- Vite manifest not found error on live server
+- Assets not properly deployed
+
+SOLUTION:
+Built assets are now included in the repository.
+Just run these commands on live server:
+
+cd ~/public_html/plantable
+git pull origin main
+composer dump-autoload --optimize
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+php artisan cache:clear
+
+THEN:
+Check: https://dmozzakr.com/plantable/
+Website should work perfectly!
+
+If using SSH with password, run this from local:
+ssh dmozzjml@dmozzakr.com "cd ~/public_html/plantable && git pull origin main && composer dump-autoload --optimize && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan cache:clear"
+
+✅ Everything is ready - just pull latest code on live server!
