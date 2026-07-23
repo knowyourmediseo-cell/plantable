@@ -1,0 +1,167 @@
+╔════════════════════════════════════════════════════════════════════════════════╗
+║          PLANTABLE ECO - CPANEL DEPLOYMENT INSTRUCTIONS                        ║
+╚════════════════════════════════════════════════════════════════════════════════╝
+
+PROJECT: Plantable Eco E-Commerce Platform
+DOMAIN: dmozzakr.com
+SUBDOMAIN PATH: public_html/plantable
+DATABASE: dmozzjml_plant
+DATABASE USER: dmozzjml_plantuser
+
+════════════════════════════════════════════════════════════════════════════════
+
+DEPLOYMENT STEPS:
+
+1️⃣  CPANEL - CREATE DATABASE (if not already created):
+   • Go to cPanel > MySQL Databases
+   • Create Database: dmozzjml_plant
+   • Create User: dmozzjml_plantuser with strong password
+   • Add user to database with ALL privileges
+   • Save the password securely
+
+2️⃣  SSH TO CPANEL SERVER:
+   ssh -p 22 dmozzjml@dmozzakr.com
+   
+3️⃣  NAVIGATE TO PUBLIC_HTML:
+   cd public_html
+   
+4️⃣  EXTRACT PROJECT:
+   tar -xzf plantable-eco-production.tar.gz
+   mv plantable-eco plantable
+   cd plantable
+
+5️⃣  INSTALL DEPENDENCIES:
+   composer install --optimize-autoloader --no-dev
+   npm install --production
+   npm run build
+
+6️⃣  CONFIGURE ENVIRONMENT:
+   cp .env.example .env
+   
+   Edit .env with your database credentials:
+   
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_DATABASE=dmozzjml_plant
+   DB_USERNAME=dmozzjml_plantuser
+   DB_PASSWORD=<YOUR_PASSWORD_HERE>
+   
+   APP_URL=https://dmozzakr.com/plantable
+   
+   For emails (if you have SMTP configured):
+   MAIL_MAILER=smtp
+   MAIL_HOST=mail.dmozzakr.com
+   MAIL_PORT=465
+   MAIL_USERNAME=noreply@dmozzakr.com
+   MAIL_PASSWORD=<YOUR_EMAIL_PASSWORD>
+   MAIL_ENCRYPTION=ssl
+   MAIL_FROM_ADDRESS=noreply@dmozzakr.com
+
+7️⃣  GENERATE APPLICATION KEY:
+   php artisan key:generate
+
+8️⃣  RUN MIGRATIONS:
+   php artisan migrate --force
+
+9️⃣  CREATE STORAGE LINK:
+   php artisan storage:link
+
+🔟  CACHE EVERYTHING:
+   php artisan config:cache
+   php artisan route:cache
+   php artisan view:cache
+   php artisan optimize
+
+1️⃣1️⃣  SET PERMISSIONS:
+   chmod -R 775 storage bootstrap/cache
+   chmod -R 755 public
+   chown -R nobody:nobody storage bootstrap/cache
+
+1️⃣2️⃣  CONFIGURE CPANEL - PUBLIC_HTML DIRECTORY:
+   • Go to cPanel > Document Root
+   • Set document root to: public_html/plantable/public
+   
+   OR if subdomain is separate:
+   • Create addon domain for plantable.dmozzakr.com
+   • Document root: public_html/plantable/public
+
+1️⃣3️⃣  CONFIGURE APACHE - .HTACCESS:
+   Ensure .htaccess exists in public_html/plantable/
+   File should contain rewrite rules for Laravel routing
+   (Already included in deployment)
+
+1️⃣4️⃣  CONFIGURE SSL/HTTPS:
+   • Go to cPanel > AutoSSL
+   • Install SSL certificate for plantable.dmozzakr.com
+   • Ensure HTTPS is enforced
+
+1️⃣5️⃣  RESTART PHP & APACHE:
+   In cPanel > Restart Services > Apache & PHP
+
+1️⃣6️⃣  VERIFY DEPLOYMENT:
+   • Open: https://dmozzakr.com/plantable
+   • Should show homepage
+   • Admin: https://dmozzakr.com/plantable/admin
+
+════════════════════════════════════════════════════════════════════════════════
+
+DEFAULT ADMIN CREDENTIALS (After Seeding):
+Email: admin@example.com
+Password: password123
+
+⚠️  CHANGE DEFAULT PASSWORD IMMEDIATELY ON FIRST LOGIN!
+
+════════════════════════════════════════════════════════════════════════════════
+
+DATABASE EXPORT (from localhost):
+mysqldump -u root plantable_eco > plantable-eco-backup.sql
+
+IMPORT ON CPANEL:
+• SSH: mysql -u dmozzjml_plantuser -p dmozzjml_plant < plantable-eco-backup.sql
+• Or use cPanel > PhpMyAdmin to import SQL file
+
+════════════════════════════════════════════════════════════════════════════════
+
+TROUBLESHOOTING:
+
+❌ 500 Error:
+   • Check: storage/logs/laravel.log
+   • Ensure .env has correct database credentials
+   • Run: php artisan config:clear
+
+❌ Database Connection Failed:
+   • Verify database name, user, password
+   • Ensure user has ALL privileges on database
+   • Check hostname (usually localhost for cPanel)
+
+❌ Permission Denied:
+   • Run: chmod -R 775 storage bootstrap/cache
+   • Ensure nobody user owns storage folder
+
+❌ Cannot find storage folder:
+   • Run: php artisan storage:link
+   • Check public/storage symbolic link exists
+
+❌ Images not loading:
+   • Verify storage link created correctly
+   • Check: php artisan storage:link
+   • Ensure public/storage is readable
+
+════════════════════════════════════════════════════════════════════════════════
+
+BACKUP COMMANDS:
+
+Backup Database:
+mysqldump -u dmozzjml_plantuser -p dmozzjml_plant > backup-$(date +%Y%m%d).sql
+
+Backup Application:
+tar -czf plantable-eco-backup-$(date +%Y%m%d).tar.gz /home/dmozzjml/public_html/plantable
+
+Restore Database:
+mysql -u dmozzjml_plantuser -p dmozzjml_plant < backup-20240723.sql
+
+════════════════════════════════════════════════════════════════════════════════
+
+For any issues or questions, refer to the README.md file in the project root.
+
+Happy deploying! 🚀
