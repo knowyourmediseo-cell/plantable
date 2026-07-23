@@ -1,0 +1,34 @@
+🌱 PLANTABLE ECO - FIX ENV AND ROUTES 🌱
+
+Live server par .env file ko update karna hoga!
+
+RUN ON LIVE SERVER:
+===================
+
+cd ~/public_html/plantable
+
+# Copy the correct .env from the template
+cp .env.live .env
+
+# Clear all caches again with new config
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+
+# Rebuild caches
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+THEN VERIFY:
+============
+https://dmozzakr.com/plantable/
+
+✓ Header/footer should show
+✓ Links should work
+✓ All pages accessible
+✓ Database connected
+✓ Sessions working
+
+DONE! 🎉
