@@ -1,0 +1,194 @@
+/* Admin Panel Styles */
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.sidebar {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #1B4332 0%, #2E7D32 100%);
+}
+
+.sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s;
+    border-radius: 8px;
+    margin: 4px 0;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #1B5E20 0%, #388E3C 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.4);
+}
+
+.table {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table thead th {
+    background: #f8f9fa;
+    border: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.table tbody tr {
+    transition: background 0.2s;
+}
+
+.table tbody tr:hover {
+    background: #f8fdf8;
+}
+
+.form-control,
+.form-select {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #2E7D32;
+    box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.1);
+}
+
+.badge {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.page-header {
+    padding: 24px 0;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 24px;
+}
+
+.stats-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fff8 100%);
+    border-left: 4px solid #2E7D32;
+}
+
+/* DataTables Custom Styling */
+.dataTables_wrapper {
+    padding: 20px;
+}
+
+.dataTables_filter input {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    padding: 8px 16px;
+}
+
+.dataTables_length select {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    padding: 6px 12px;
+}
+
+/* Image Preview */
+.image-preview {
+    position: relative;
+    display: inline-block;
+    margin: 8px;
+}
+
+.image-preview img {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.image-preview .remove-image {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #f44336;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.image-preview .remove-image:hover {
+    background: #d32f2f;
+    transform: scale(1.1);
+}
+
+/* Switch Toggle */
+.form-check-input:checked {
+    background-color: #2E7D32;
+    border-color: #2E7D32;
+}
+
+/* Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+    color: #2E7D32;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: -100%;
+        transition: left 0.3s;
+        z-index: 1000;
+    }
+
+    .sidebar.show {
+        left: 0;
+    }
+}

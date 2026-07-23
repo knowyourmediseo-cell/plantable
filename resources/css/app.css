@@ -1,0 +1,175 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════
+   BOOTSTRAP COLOR OVERRIDES - Replace blue with theme green
+   ═══════════════════════════════════════════════════════════ */
+:root {
+    --bs-primary: #2E7D32;
+    --bs-primary-rgb: 46, 125, 50;
+    --bs-link-color: #2E7D32;
+    --bs-link-hover-color: #1B5E20;
+}
+
+/* Override Bootstrap primary buttons */
+.btn-primary {
+    background-color: #2E7D32 !important;
+    border-color: #2E7D32 !important;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active {
+    background-color: #1B5E20 !important;
+    border-color: #1B5E20 !important;
+}
+
+/* Override Bootstrap outline-primary buttons */
+.btn-outline-primary {
+    color: #2E7D32 !important;
+    border-color: #2E7D32 !important;
+}
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active,
+.btn-outline-primary.active {
+    background-color: #2E7D32 !important;
+    border-color: #2E7D32 !important;
+    color: #fff !important;
+}
+
+/* Override Bootstrap text-primary */
+.text-primary {
+    color: #2E7D32 !important;
+}
+
+/* Override Bootstrap link colors */
+a.text-primary:hover,
+a.text-primary:focus {
+    color: #1B5E20 !important;
+}
+
+/* Override Bootstrap breadcrumb links */
+.breadcrumb-item a {
+    color: #2E7D32 !important;
+}
+.breadcrumb-item a:hover,
+.breadcrumb-item a:focus {
+    color: #1B5E20 !important;
+}
+
+/* Override all Bootstrap links */
+
+/* Override Bootstrap badges */
+.badge.bg-primary {
+    background-color: #2E7D32 !important;
+}
+
+@layer base {
+    body {
+        @apply font-inter text-gray-900 bg-white antialiased;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-poppins font-semibold;
+    }
+}
+
+@layer components {
+    .btn {
+        @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium transition-all duration-300 ease-in-out;
+    }
+
+    .btn-primary {
+        @apply bg-primary text-white hover:bg-primary-700 focus:ring-4 focus:ring-primary-300;
+    }
+
+    .btn-secondary {
+        @apply bg-secondary text-white hover:bg-secondary-700 focus:ring-4 focus:ring-secondary-300;
+    }
+
+    .btn-outline {
+        @apply border-2 border-primary text-primary hover:bg-primary hover:text-white;
+    }
+
+    .section-padding {
+        @apply py-16 md:py-24;
+    }
+
+    .container-custom {
+        @apply container mx-auto px-4 sm:px-6 lg:px-8;
+    }
+
+    .card {
+        @apply bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-xl hover:-translate-y-1;
+    }
+
+    .input-field {
+        @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors;
+    }
+
+    .section-title {
+        @apply text-3xl md:text-4xl lg:text-5xl font-bold text-dark mb-4;
+    }
+
+    .section-subtitle {
+        @apply text-lg md:text-xl text-gray-600 mb-8;
+    }
+}
+
+@layer utilities {
+    .text-balance {
+        text-wrap: balance;
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: theme('colors.primary.DEFAULT');
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: theme('colors.primary.700');
+}
+
+/* Loading Spinner */
+.spinner {
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 3px solid theme('colors.primary.DEFAULT');
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Lazy Load Image */
+img[data-src] {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+img.lazyloaded {
+    opacity: 1;
+}
+
+/* Print Styles */
+@media print {
+    header, footer, nav, aside, .no-print {
+        display: none !important;
+    }
+}
