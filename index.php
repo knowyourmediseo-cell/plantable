@@ -1,62 +1,69 @@
 <?php
 /**
- * PLANTABLE ECO - ROOT ROUTER
+ * PLANTABLE ECO - ROOT ROUTER (SIMPLIFIED)
  * 
  * This file handles all requests to /plantable/* subdirectory
- * and routes them properly to Laravel's public/index.php
+ * Routes them to Laravel's public/index.php
+ * 
+ * Note: The .htaccess file rewrites to public/index.php
+ * This file is here as a fallback if .htaccess doesn't work
  */
 
-// Get the request path
-$request_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$base_path = __DIR__;
+$request_uri = $_SERVER['REQUEST_URI'] ?? '/';
 
-// Remove /plantable prefix
-if (strpos($request_path, '/plantable/') === 0) {
-    $request_path = substr($request_path, strlen('/plantable'));
-} elseif (strpos($request_path, '/plantable') === 0) {
-    $request_path = substr($request_path, strlen('/plantable'));
-}
-
-// Ensure path starts with /
-if (empty($request_path) || $request_path === '') {
-    $request_path = '/';
-}
-
-// Check if it's a static file in public folder
-$public_path = __DIR__ . '/public' . $request_path;
-
-// Handle static files
-if (file_exists($public_path) && is_file($public_path)) {
-    // Determine MIME type
-    $ext = pathinfo($public_path, PATHINFO_EXTENSION);
-    $mime_types = [
-        'css' => 'text/css',
-        'js' => 'application/javascript',
-        'jpg' => 'image/jpeg',
-        'jpeg' => 'image/jpeg',
-        'png' => 'image/png',
-        'gif' => 'image/gif',
-        'svg' => 'image/svg+xml',
-        'webp' => 'image/webp',
-        'ico' => 'image/x-icon',
-        'woff' => 'font/woff',
-        'woff2' => 'font/woff2',
-        'ttf' => 'font/ttf',
-        'eot' => 'application/vnd.ms-fontobject',
-        'json' => 'application/json',
-        'txt' => 'text/plain',
-        'html' => 'text/html',
-        'pdf' => 'application/pdf'
-    ];
+// If requesting something in /plantable/, route to public/index.php
+if (strpos($request_uri, '/plantable') === 0) {
+    // Let .htaccess handle it by routing to public/index.php
+    // But if we're here, we need to do it manually
     
-    $mime = $mime_types[$ext] ?? 'application/octet-stream';
-    header('Content-Type: ' . $mime);
-    readfile($public_path);
-    exit;
+    // Extract the path after /plantable
+    $path = substr($request_uri, 10); // Remove '/plantable'
+    if (empty($path)) {
+        $path = '/';
+    }
+    
+    // Check if it's a static file in public
+    $file_path = $base_path . '/public' . $path;
+    if (file_exists($file_path) && is_file($file_path)) {
+        // Serve static file directly
+        $ext = strtolower(pathinfo($file_path, PATHINFO_EXTENSION));
+        $mime_map = [
+            'css' => 'text/css',
+            'js' => 'application/javascript',
+            'json' => 'application/json',
+            'png' => 'image/png',
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'gif' => 'image/gif',
+            'svg' => 'image/svg+xml',
+            'webp' => 'image/webp',
+            'woff' => 'font/woff',
+            'woff2' => 'font/woff2',
+            'ttf' => 'font/ttf',
+        ];
+        
+        if (isset($mime_map[$ext])) {
+            header('Content-Type: ' . $mime_map[$ext]);
+        }
+        
+        // Set cache headers for static assets
+        if (strpos($file_path, '/build/') !== false) {
+            header('Cache-Control: public, max-age=31536000, immutable');
+        }
+        
+        readfile($file_path);
+        exit;
+    }
+    
+    // Not a static file, route to Laravel
+    // Update REQUEST_URI to remove /plantable prefix
+    $_SERVER['REQUEST_URI'] = $path;
+    $_SERVER['PATH_INFO'] = $path;
+    
+    require $base_path . '/public/index.php';
+} else {
+    // Not a /plantable request, might be direct to /public
+    require $base_path . '/public/index.php';
 }
 
-// Update $_SERVER for Laravel
-$_SERVER['REQUEST_URI'] = $request_path;
-$_SERVER['PATH_INFO'] = $request_path;
-
-// Route to Laravel's public/index.php
-require __DIR__ . '/public/index.php';
