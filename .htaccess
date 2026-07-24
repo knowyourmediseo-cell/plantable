@@ -2,8 +2,10 @@
     RewriteEngine On
     RewriteBase /plantable/
 
-    # Remove index.php from URLs
+    # Don't rewrite if it's already a file or directory
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ public/index.php/$1 [L]
+
+    # Route all requests to public/index.php
+    RewriteRule ^ public/index.php [QSA,L]
 </IfModule>
